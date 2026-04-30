@@ -15,8 +15,58 @@ import {
 	Layers,
 	CodeXml,
 } from "lucide-react";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 
 const API_URL = import.meta.env.VITE_API_URL;
+
+const MODEL_PERFORMANCE = {
+	overallAccuracy: 87.9,
+	testLoss: 0.3426,
+	trainingTime: "584.68 sec",
+	totalSamples: 1690,
+	classes: [
+		{
+			className: "Forest",
+			accuracy: 94.7,
+			precision: 97,
+			recall: 95,
+			f1Score: 96,
+			support: 412,
+		},
+		{
+			className: "Glacier",
+			accuracy: 95.6,
+			precision: 74,
+			recall: 96,
+			f1Score: 83,
+			support: 431,
+		},
+		{
+			className: "Sea",
+			accuracy: 64.5,
+			precision: 96,
+			recall: 64,
+			f1Score: 77,
+			support: 414,
+		},
+		{
+			className: "Street",
+			accuracy: 96.1,
+			precision: 91,
+			recall: 96,
+			f1Score: 94,
+			support: 433,
+		},
+	],
+};
 
 const SUPPORTED_CLASSES = [
 	"Buildings",
@@ -57,6 +107,7 @@ function Home() {
 	const [prediction, setPrediction] = useState(null);
 	const [dragActive, setDragActive] = useState(false);
 	const [supportedClasses, setSupportedClasses] = useState(SUPPORTED_CLASSES);
+	const [showPerformance, setShowPerformance] = useState(false);
 	const inputRef = useRef(null);
 
 	useEffect(() => {
@@ -697,6 +748,22 @@ function Home() {
 					))}
 				</motion.div>
 
+				<div className="mt-12 flex justify-center">
+					<motion.button
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.5, delay: 0.1 }}
+						onClick={() => setShowPerformance(true)}
+						whileHover={{ scale: 1.02 }}
+						whileTap={{ scale: 0.98 }}
+						className="inline-flex items-center justify-center gap-2 rounded-xl bg-linear-to-r from-elephant-400 via-elephant-500 to-elephant-600 px-5 py-3 text-sm font-semibold text-shark-950 shadow-[0_0_20px_-6px_rgba(11,223,255,0.55)] transition hover:shadow-[0_0_28px_-6px_rgba(11,223,255,0.75)]"
+					>
+						<BarChart3 className="h-4 w-4" />
+						View Model Performance
+					</motion.button>
+				</div>
+
 				<a
 					href="https://github.com/MosabbirAhmed125"
 					target="_blank"
@@ -706,6 +773,185 @@ function Home() {
 					<CodeXml className="h-4 w-4" />
 					<span>Built by Mosabbir Ahmed</span>
 				</a>
+
+				<AnimatePresence>
+					{showPerformance && (
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.2 }}
+							onClick={() => setShowPerformance(false)}
+							className="fixed inset-0 z-50 flex items-center justify-center bg-shark-950/75 p-3 backdrop-blur-md sm:p-4"
+							role="dialog"
+							aria-modal="true"
+							aria-labelledby="model-performance-title"
+						>
+							<motion.div
+								initial={{ opacity: 0, scale: 0.94, y: 20 }}
+								animate={{ opacity: 1, scale: 1, y: 0 }}
+								exit={{ opacity: 0, scale: 0.96, y: 20 }}
+								transition={{ duration: 0.3 }}
+								onClick={(e) => e.stopPropagation()}
+								className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto scrollbar-hide overflow-x-hidden rounded-2xl border border-elephant-500/20 bg-shark-800/90 p-4 shadow-[0_0_45px_-20px_rgba(11,223,255,0.3)] backdrop-blur-xl sm:p-5 md:p-6"
+							>
+								<div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-elephant-400/40 to-transparent" />
+
+								<button
+									onClick={() => setShowPerformance(false)}
+									aria-label="Close model performance modal"
+									className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-shark-900/60 text-shark-300 transition hover:bg-shark-800 hover:text-elephant-300"
+								>
+									<X className="h-4 w-4" />
+								</button>
+
+								<div className="mb-5 pr-12">
+									<h2
+										id="model-performance-title"
+										className="text-xl font-semibold text-shark-100 sm:text-2xl"
+									>
+										Model Performance
+									</h2>
+									<p className="mt-1 text-xs text-shark-400 sm:text-sm">
+										Class-wise accuracy breakdown from the
+										evaluation results.
+									</p>
+								</div>
+
+								<div className="mb-5 rounded-xl border border-elephant-500/20 bg-linear-to-br from-elephant-950/80 to-shark-900/80 p-4">
+									<p className="text-[11px] uppercase tracking-wider text-elephant-300">
+										Overall Accuracy
+									</p>
+									<p className="mt-1 text-3xl font-bold text-shark-100 sm:text-4xl">
+										{MODEL_PERFORMANCE.overallAccuracy}%
+									</p>
+								</div>
+
+								<div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Classes Evaluated
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.classes.length}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Model
+										</p>
+										<p className="mt-1.5 truncate text-base font-semibold text-shark-100">
+											Intel Scene CNN
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Test Samples
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.totalSamples}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Test Loss
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.testLoss}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Training Time
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.trainingTime}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Weighted F1-Score
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											0.88
+										</p>
+									</div>
+								</div>
+
+								<div className="mb-4">
+									<p className="mb-3 text-[11px] uppercase tracking-wider text-shark-400">
+										Class-Wise Accuracy
+									</p>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/40 p-3">
+										<ResponsiveContainer
+											width="100%"
+											height={230}
+										>
+											<BarChart
+												data={MODEL_PERFORMANCE.classes}
+												margin={{
+													top: 10,
+													right: 10,
+													left: -15,
+													bottom: 0,
+												}}
+											>
+												<CartesianGrid
+													strokeDasharray="3 3"
+													stroke="rgba(155,245,255,0.1)"
+												/>
+												<XAxis
+													dataKey="className"
+													stroke="#a5a5a5"
+													tickLine={false}
+													axisLine={false}
+													style={{ fontSize: "11px" }}
+												/>
+												<YAxis
+													domain={[0, 100]}
+													stroke="#a5a5a5"
+													tickLine={false}
+													axisLine={false}
+													style={{ fontSize: "11px" }}
+												/>
+												<Tooltip
+													cursor={false}
+													contentStyle={{
+														backgroundColor:
+															"#1a1a1a",
+														border: "1px solid #007d9f",
+														borderRadius: "10px",
+														color: "#00c9eb",
+														boxShadow:
+															"0 12px 30px rgba(0,0,0,0.35)",
+													}}
+													formatter={(value) =>
+														`${value.toFixed(1)}%`
+													}
+													labelStyle={{
+														color: "#9bf5ff",
+													}}
+												/>
+												<Bar
+													dataKey="accuracy"
+													fill="#00c9eb"
+													radius={[8, 8, 0, 0]}
+												/>
+											</BarChart>
+										</ResponsiveContainer>
+									</div>
+								</div>
+
+								<p className="text-[11px] leading-relaxed text-shark-500">
+									Class-wise accuracy is calculated from the
+									confusion matrix as correct predictions
+									divided by total actual samples for each
+									class.
+								</p>
+							</motion.div>
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</div>
 		</div>
 	);
