@@ -264,34 +264,18 @@ function Home() {
 				>
 					<motion.div
 						variants={{
-							hidden: { opacity: 0, y: 20 },
-							show: { opacity: 1, y: 0 },
-						}}
-						className="inline-flex items-center gap-2 rounded-full border border-elephant-500/30 bg-shark-800/60 px-4 py-1.5 text-xs font-medium text-elephant-300 backdrop-blur"
-					>
-						<Sparkles className="h-3.5 w-3.5" />
-						CNN Powered Image Intelligence
-					</motion.div>
-
-					<motion.div
-						variants={{
 							hidden: { opacity: 0, scale: 0.9 },
 							show: { opacity: 1, scale: 1 },
 						}}
-						className="relative mt-6"
+						className="relative"
 					>
 						<div className="absolute inset-0 -z-10 rounded-full bg-elephant-500/20 blur-2xl" />
-						<div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-elephant-500/30 bg-linear-to-br from-shark-800 to-shark-950 shadow-[0_0_40px_-10px_rgba(11,223,255,0.6)]">
-							<motion.div
-								animate={{ rotate: [0, 360] }}
-								transition={{
-									duration: 14,
-									repeat: Infinity,
-									ease: "linear",
-								}}
-							>
-								<BrainCircuit className="h-8 w-8 text-elephant-400" />
-							</motion.div>
+						<div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border-3 border-elephant-500/30 bg-linear-to-br from-shark-800 to-shark-950 shadow-[0_0_40px_-10px_rgba(11,223,255,0.6)]">
+							<img
+								src="/favicon.svg"
+								alt="Intel Image CNN Logo"
+								className="absolute inset-0 h-full w-full object-cover"
+							/>
 						</div>
 					</motion.div>
 
@@ -300,11 +284,11 @@ function Home() {
 							hidden: { opacity: 0, y: 20 },
 							show: { opacity: 1, y: 0 },
 						}}
-						className="mt-6 text-4xl font-bold tracking-tight text-shark-100 sm:text-5xl lg:text-6xl"
+						className="mt-6 text-4xl font-gurvaco tracking-widest text-shark-100 sm:text-5xl lg:text-6xl"
 					>
-						Intel{" "}
+						INTEL{" "}
 						<span className="bg-linear-to-r from-elephant-200 via-elephant-400 to-elephant-500 bg-clip-text text-transparent">
-							Image Classifier
+							IMAGE CLASSIFIER
 						</span>
 					</motion.h1>
 
