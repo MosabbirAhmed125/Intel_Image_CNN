@@ -5,9 +5,7 @@ import {
 	Upload,
 	Image as ImageIcon,
 	Cpu,
-	BrainCircuit,
 	ScanSearch,
-	Sparkles,
 	CheckCircle,
 	LoaderCircle,
 	X,
@@ -16,8 +14,6 @@ import {
 	BarChart3,
 	Layers,
 	CodeXml,
-	User,
-	Code2Icon,
 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -95,6 +91,14 @@ function Home() {
 		if (!file) return;
 
 		const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+		const MAX_FILE_SIZE_MB = 5;
+		const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+		if (file.size > MAX_FILE_SIZE_BYTES) {
+			toast.error(`Image size must be less than ${MAX_FILE_SIZE_MB} MB.`);
+			return;
+		}
+
 		if (!allowedTypes.includes(file.type)) {
 			toast.error("Only JPG, JPEG, and PNG images are supported.");
 			return;
@@ -228,7 +232,7 @@ function Home() {
 	];
 
 	return (
-		<div className="relative min-h-screen overflow-hidden bg-shark-900 font-ubuntu text-shark-200">
+		<div className="relative min-h-screen overflow-x-hidden bg-shark-900 font-ubuntu text-shark-200">
 			<div className="pointer-events-none absolute inset-0">
 				<div className="absolute -top-40 -left-40 h-120 w-120 rounded-full bg-elephant-500/20 blur-[140px]" />
 				<div className="absolute top-1/3 -right-40 h-130 w-130 rounded-full bg-elephant-700/25 blur-[160px]" />
@@ -246,7 +250,7 @@ function Home() {
 				<div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-shark-950/80" />
 			</div>
 
-			<div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+			<div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 xl:py-20">
 				<motion.section
 					initial="hidden"
 					animate="show"
@@ -264,7 +268,7 @@ function Home() {
 						className="relative"
 					>
 						<div className="absolute inset-0 -z-10 rounded-full bg-elephant-500/20 blur-2xl" />
-						<div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border-3 border-elephant-500/30 bg-linear-to-br from-shark-800 to-shark-950 shadow-[0_0_40px_-10px_rgba(11,223,255,0.6)]">
+						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border-3 border-elephant-500/30 bg-linear-to-br from-shark-800 to-shark-950 shadow-[0_0_40px_-10px_rgba(11,223,255,0.6)] sm:h-20 sm:w-20">
 							<img
 								src="/favicon.svg"
 								alt="Intel Image CNN Logo"
@@ -278,7 +282,7 @@ function Home() {
 							hidden: { opacity: 0, y: 20 },
 							show: { opacity: 1, y: 0 },
 						}}
-						className="mt-6 text-4xl font-gurvaco tracking-widest text-shark-100 sm:text-5xl lg:text-6xl"
+						className="mt-5 max-w-full text-center text-3xl font-gurvaco tracking-[0.12em] text-shark-100 sm:mt-6 sm:text-5xl sm:tracking-widest lg:text-6xl"
 					>
 						INTEL{" "}
 						<span className="bg-linear-to-r from-elephant-200 via-elephant-400 to-elephant-500 bg-clip-text text-transparent">
@@ -291,7 +295,7 @@ function Home() {
 							hidden: { opacity: 0, y: 20 },
 							show: { opacity: 1, y: 0 },
 						}}
-						className="mt-4 max-w-2xl text-xs leading-relaxed text-shark-300 sm:text-base"
+						className="mt-4 px-2 text-xs leading-relaxed text-shark-300 sm:text-sm md:text-base"
 					>
 						Upload a scene image from the supported categories and
 						let the CNN model predict its class with confidence.
@@ -305,16 +309,16 @@ function Home() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.5 }}
-					className="mt-8 flex flex-col items-center sm:mt-10"
+					className="mt-7 flex flex-col items-center px-2 sm:mt-10"
 				>
 					<p className="text-xs font-medium font-ubuntu uppercase tracking-[0.2em] text-shark-400">
 						Supported Categories
 					</p>
-					<div className="mt-4 font-ubuntu flex flex-wrap items-center justify-center gap-2">
+					<div className="mt-4 flex max-w-full flex-wrap items-center justify-center gap-2 font-ubuntu">
 						{supportedClasses.map((c) => (
 							<span
 								key={c}
-								className="rounded-full border border-elephant-500/30 bg-shark-800/60 px-4 py-1.5 text-xs font-medium text-elephant-200 backdrop-blur transition hover:border-elephant-400/60 hover:bg-elephant-500/10"
+								className="rounded-full border border-elephant-500/30 bg-shark-800/60 px-3 py-1.5 text-xs font-medium text-elephant-200 backdrop-blur transition hover:border-elephant-400/60 hover:bg-elephant-500/10 sm:px-4"
 							>
 								{c}
 							</span>
@@ -322,15 +326,15 @@ function Home() {
 					</div>
 				</motion.div>
 
-				<div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2 sm:mt-12">
+				<div className="mt-8 grid w-full grid-cols-1 gap-5 sm:mt-10 lg:mt-12 lg:grid-cols-2 lg:gap-6">
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, delay: 0.2 }}
-						className="group relative overflow-hidden rounded-3xl border border-elephant-500/20 bg-shark-800/60 p-6 shadow-[0_0_60px_-20px_rgba(11,223,255,0.35)] backdrop-blur-xl sm:p-8"
+						className="group relative min-w-0 overflow-hidden rounded-3xl border border-elephant-500/20 bg-shark-800/60 p-4 shadow-[0_0_60px_-20px_rgba(11,223,255,0.35)] backdrop-blur-xl sm:p-6 lg:p-8"
 					>
 						<div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-elephant-400/50 to-transparent" />
-						<div className="mb-6 flex items-center justify-between">
+						<div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
 							<div className="flex items-center gap-3">
 								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-elephant-500/15 text-elephant-400">
 									<ImageIcon className="h-5 w-5" />
@@ -371,7 +375,7 @@ function Home() {
 								onDragOver={handleDragOver}
 								onDragLeave={handleDragLeave}
 								whileHover={{ scale: 1.005 }}
-								className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-16 text-center transition ${
+								className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-10 text-center transition sm:px-6 sm:py-14 lg:py-16 ${
 									dragActive
 										? "border-elephant-400 bg-elephant-500/10"
 										: "border-shark-700 bg-shark-900/40 hover:border-elephant-500/50 hover:bg-shark-900/60"
@@ -379,7 +383,7 @@ function Home() {
 							>
 								<div className="relative mb-4">
 									<div className="absolute inset-0 rounded-full bg-elephant-500/20 blur-xl" />
-									<div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-elephant-500/30 bg-shark-800">
+									<div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-elephant-500/30 bg-shark-800 sm:h-16 sm:w-16">
 										<Upload className="h-7 w-7 text-elephant-400" />
 									</div>
 								</div>
@@ -390,7 +394,7 @@ function Home() {
 									Click or drag &amp; drop to browse
 								</p>
 								<p className="mt-3 text-xs text-shark-500">
-									PNG, JPG or JPEG
+									PNG, JPG or JPEG · Max 5 MB
 								</p>
 							</motion.label>
 						) : (
@@ -403,7 +407,7 @@ function Home() {
 									<img
 										src={previewUrl}
 										alt={`Preview of uploaded scene ${selectedFile?.name}`}
-										className="h-72 w-full object-cover sm:h-80"
+										className="h-56 w-full object-cover sm:h-72 lg:h-80"
 									/>
 									<div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-shark-950/90 to-transparent p-3">
 										<p className="truncate text-sm font-medium text-shark-100">
@@ -434,7 +438,7 @@ function Home() {
 							}}
 							onClick={handlePredict}
 							disabled={!selectedFile || isPredicting}
-							className={`mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-semibold transition ${
+							className={`mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition sm:mt-6 sm:px-6 sm:py-3.5 ${
 								!selectedFile || isPredicting
 									? "cursor-not-allowed border border-shark-700 bg-shark-800/60 text-shark-500"
 									: "bg-linear-to-r from-elephant-400 via-elephant-500 to-elephant-600 text-shark-950 shadow-[0_0_30px_-5px_rgba(11,223,255,0.6)] hover:shadow-[0_0_40px_-5px_rgba(11,223,255,0.8)]"
@@ -458,10 +462,10 @@ function Home() {
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, delay: 0.3 }}
-						className="relative overflow-hidden rounded-3xl border border-elephant-500/20 bg-shark-800/60 p-6 shadow-[0_0_60px_-20px_rgba(11,223,255,0.35)] backdrop-blur-xl sm:p-8"
+						className="group relative min-w-0 overflow-hidden rounded-3xl border border-elephant-500/20 bg-shark-800/60 p-4 shadow-[0_0_60px_-20px_rgba(11,223,255,0.35)] backdrop-blur-xl sm:p-6 lg:p-8"
 					>
 						<div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-elephant-400/50 to-transparent" />
-						<div className="mb-6 flex items-center gap-3">
+						<div className="mb-5 flex items-center gap-3 sm:mb-6">
 							<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-elephant-500/15 text-elephant-400">
 								<Cpu className="h-5 w-5" />
 							</div>
@@ -482,7 +486,7 @@ function Home() {
 									initial={{ opacity: 0, y: 10 }}
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: -10 }}
-									className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-shark-700 bg-shark-900/40 px-6 py-20 text-center"
+									className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-shark-700 bg-shark-900/40 px-4 py-12 text-center sm:px-6 sm:py-16 lg:py-20"
 								>
 									<div className="relative mb-4">
 										<div className="absolute inset-0 rounded-full bg-elephant-500/20 blur-xl" />
@@ -506,7 +510,7 @@ function Home() {
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
 									exit={{ opacity: 0 }}
-									className="flex flex-col items-center justify-center rounded-2xl border border-elephant-500/20 bg-shark-900/40 px-6 py-20 text-center"
+									className="flex flex-col items-center justify-center rounded-2xl border border-elephant-500/20 bg-shark-900/40 px-4 py-12 text-center sm:px-6 sm:py-16 lg:py-20"
 								>
 									<LoaderCircle className="h-10 w-10 animate-spin text-elephant-400" />
 									<p className="mt-4 text-sm font-medium text-shark-200">
@@ -528,12 +532,12 @@ function Home() {
 									className="space-y-6"
 								>
 									<div className="rounded-2xl border border-elephant-500/30 bg-linear-to-br from-elephant-950/80 to-shark-900/80 p-5">
-										<div className="flex items-start justify-between gap-3">
+										<div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between">
 											<div>
 												<p className="text-xs uppercase tracking-wider text-elephant-300">
 													Predicted Class
 												</p>
-												<h3 className="mt-1 text-3xl font-bold text-shark-100 sm:text-4xl">
+												<h3 className="mt-1 wrap-break-word text-2xl font-bold text-shark-100 sm:text-3xl lg:text-4xl">
 													{prediction.label}
 												</h3>
 											</div>
@@ -573,7 +577,7 @@ function Home() {
 										</div>
 									</div>
 
-									<div className="grid grid-cols-2 gap-3">
+									<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 										<div className="rounded-xl border border-shark-700 bg-shark-900/60 p-4">
 											<p className="text-xs text-shark-400">
 												Inference Time
@@ -586,7 +590,7 @@ function Home() {
 											<p className="text-xs text-shark-400">
 												Model
 											</p>
-											<p className="mt-1 truncate text-lg font-semibold text-shark-100">
+											<p className="mt-1 min-w-0 truncate text-lg font-semibold text-shark-100">
 												{prediction.model}
 											</p>
 										</div>
@@ -604,19 +608,19 @@ function Home() {
 														<div key={p.label}>
 															<div className="mb-1 flex items-center justify-between text-sm">
 																<span
-																	className={
+																	className={`min-w-0 truncate ${
 																		isTop
 																			? "font-semibold text-elephant-300"
 																			: "text-shark-300"
-																	}
+																	}`}
 																>
 																	{p.label}
 																</span>
 																<span
 																	className={
 																		isTop
-																			? "font-semibold text-elephant-300"
-																			: "text-shark-400"
+																			? "ml-2 shrink-0 font-semibold text-elephant-300"
+																			: "ml-2 shrink-0 text-shark-400"
 																	}
 																>
 																	{p.confidence.toFixed(
@@ -677,7 +681,7 @@ function Home() {
 								show: { opacity: 1, y: 0 },
 							}}
 							whileHover={{ y: -4 }}
-							className="group relative overflow-hidden rounded-2xl border border-shark-700 bg-shark-800/50 p-6 backdrop-blur transition hover:border-elephant-500/40 hover:shadow-[0_0_40px_-10px_rgba(11,223,255,0.4)]"
+							className="group relative overflow-hidden rounded-2xl border border-shark-700 bg-shark-800/50 p-5 backdrop-blur transition hover:border-elephant-500/40 hover:shadow-[0_0_40px_-10px_rgba(11,223,255,0.4)] sm:p-6"
 						>
 							<div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-elephant-500/10 blur-2xl transition group-hover:bg-elephant-500/20" />
 							<div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-elephant-500/30 bg-shark-900/80 text-elephant-400">
