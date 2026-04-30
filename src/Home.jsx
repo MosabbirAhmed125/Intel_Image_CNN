@@ -68,14 +68,7 @@ const MODEL_PERFORMANCE = {
 	],
 };
 
-const SUPPORTED_CLASSES = [
-	"Buildings",
-	"Forest",
-	"Glacier",
-	"Mountain",
-	"Sea",
-	"Street",
-];
+const SUPPORTED_CLASSES = ["Forest", "Glacier", "Sea", "Street"];
 
 function formatBytes(bytes) {
 	if (!bytes) return "";
