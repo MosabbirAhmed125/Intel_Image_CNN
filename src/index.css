@@ -1,0 +1,477 @@
+@import url("https://fonts.googleapis.com/css2?family=Boldonse&family=Borel&family=Bungee&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Major+Mono+Display&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Staatliches&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+@import "tailwindcss";
+
+@font-face {
+	font-family: "Dreamer";
+	src: url("./assets/fonts/Dreamer.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Emasland";
+	src: url("./assets/fonts/Emasland.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Freedom";
+	src: url("./assets/fonts/Freedom.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GalhauDisplay-Bold";
+	src: url("./assets/fonts/GalhauDisplay-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "GalhauDisplay-Regular";
+	src: url("./assets/fonts/GalhauDisplay-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gramola";
+	src: url("./assets/fonts/Gramola.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Gurvaco";
+	src: url("./assets/fonts/Gurvaco.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Header";
+	src: url("./assets/fonts/Header.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Idealism";
+	src: url("./assets/fonts/Idealism.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Jenko";
+	src: url("./assets/fonts/Jenko.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "MatthCondensed";
+	src: url("./assets/fonts/MatthCondensed.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-Thin.otf") format("opentype");
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-ExtraLight.otf") format("opentype");
+	font-weight: 200;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-Light.otf") format("opentype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-Regular.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-Bold.otf") format("opentype");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-ExtraBold.otf") format("opentype");
+	font-weight: 800;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Phenomena";
+	src: url("./assets/fonts/Phenomena-Black.otf") format("opentype");
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Tango";
+	src: url("./assets/fonts/Tango-Regular.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Aquatico";
+	src: url("./assets/fonts/Aquatico.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Arkhip";
+	src: url("./assets/fonts/Arkhip.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Moon";
+	src: url("./assets/fonts/Moon.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Sequel";
+	src: url("./assets/fonts/Sequel.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@theme {
+	--font-ubuntu: "Ubuntu", sans-serif;
+	--font-bungee: "Bungee", sans-serif;
+	--font-borel: "Borel", cursive;
+	--font-boldonse: "Boldonse", system-ui;
+	--font-staatliches: "Staatliches", sans-serif;
+	--font-major-mono-display: "Major Mono Display", monospace;
+	--font-phenomena: "Phenomena", sans-serif;
+	--font-tango: "Tango", cursive;
+	--font-aquatico: "Aquatico", sans-serif;
+	--font-arkhip: "Arkhip", sans-serif;
+	--font-moon: "Moon", sans-serif;
+	--font-sequel: "Sequel", sans-serif;
+	--font-dreamer: "Dreamer", sans-serif;
+	--font-emasland: "Emasland", sans-serif;
+	--font-freedom: "Freedom", sans-serif;
+	--font-galhaudisplay-bold: "GalhauDisplay-Bold", sans-serif;
+	--font-galhaudisplay-regular: "GalhauDisplay-Regular", sans-serif;
+	--font-gramola: "Gramola", sans-serif;
+	--font-gurvaco: "Gurvaco", sans-serif;
+	--font-header: "Header", sans-serif;
+	--font-idealism: "Idealism", sans-serif;
+	--font-jenko: "Jenko", sans-serif;
+	--font-matthcondensed: "MatthCondensed", sans-serif;
+}
+
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
+@theme {
+	--color-cod-gray-50: #f9fafa;
+	--color-cod-gray-100: #f4f5f5;
+	--color-cod-gray-200: #e5e6e5;
+	--color-cod-gray-300: #d3d4d3;
+	--color-cod-gray-400: #a2a4a2;
+	--color-cod-gray-500: #717371;
+	--color-cod-gray-600: #525353;
+	--color-cod-gray-700: #3f413f;
+	--color-cod-gray-800: #262726;
+	--color-cod-gray-900: #191a19;
+	--color-cod-gray-950: #111211;
+
+	--color-red-ribbon-50: #fef2f3;
+	--color-red-ribbon-100: #fde3e5;
+	--color-red-ribbon-200: #fcccd0;
+	--color-red-ribbon-300: #f9a8ae;
+	--color-red-ribbon-400: #f4757f;
+	--color-red-ribbon-500: #e83c49;
+	--color-red-ribbon-600: #d62c39;
+	--color-red-ribbon-700: #b4212c;
+	--color-red-ribbon-800: #951f28;
+	--color-red-ribbon-900: #7c2027;
+	--color-red-ribbon-950: #430c10;
+
+	--color-pearl-bush-50: #f9f7f3;
+	--color-pearl-bush-100: #f1ece3;
+	--color-pearl-bush-200: #e4dbcb;
+	--color-pearl-bush-300: #cfbea2;
+	--color-pearl-bush-400: #ba9e7d;
+	--color-pearl-bush-500: #ac8963;
+	--color-pearl-bush-600: #9f7857;
+	--color-pearl-bush-700: #84614a;
+	--color-pearl-bush-800: #6c5040;
+	--color-pearl-bush-900: #584336;
+	--color-pearl-bush-950: #2f211b;
+
+	--color-white-linen-50: #f9f6f3;
+	--color-white-linen-100: #f3ece4;
+	--color-white-linen-200: #e4d4c4;
+	--color-white-linen-300: #d3b79e;
+	--color-white-linen-400: #c09577;
+	--color-white-linen-500: #b37c5c;
+	--color-white-linen-600: #a66a50;
+	--color-white-linen-700: #8a5644;
+	--color-white-linen-800: #70473c;
+	--color-white-linen-900: #5b3c33;
+	--color-white-linen-950: #311d19;
+
+	--color-valencia-50: #fef3f2;
+	--color-valencia-100: #fde5e3;
+	--color-valencia-200: #fccfcc;
+	--color-valencia-300: #f8aea9;
+	--color-valencia-400: #f37e76;
+	--color-valencia-500: #e8554b;
+	--color-valencia-600: #d74339;
+	--color-valencia-700: #b32b22;
+	--color-valencia-800: #942720;
+	--color-valencia-900: #7b2721;
+	--color-valencia-950: #430f0c;
+
+	--color-shark-50: #fafafa;
+	--color-shark-100: #f5f5f5;
+	--color-shark-200: #e6e6e6;
+	--color-shark-300: #d6d6d6;
+	--color-shark-400: #a5a5a5;
+	--color-shark-500: #767676;
+	--color-shark-600: #575757;
+	--color-shark-700: #434343;
+	--color-shark-800: #222222;
+	--color-shark-900: #1a1a1a;
+	--color-shark-950: #0a0a0a;
+
+	--color-outrageous-orange-50: #fff3ed;
+	--color-outrageous-orange-100: #ffe3d4;
+	--color-outrageous-orange-200: #ffc4a9;
+	--color-outrageous-orange-300: #ff9b72;
+	--color-outrageous-orange-400: #fe5826;
+	--color-outrageous-orange-500: #fd3f12;
+	--color-outrageous-orange-600: #ee2408;
+	--color-outrageous-orange-700: #c51709;
+	--color-outrageous-orange-800: #9c1410;
+	--color-outrageous-orange-900: #7e1410;
+	--color-outrageous-orange-950: #440606;
+
+	--color-fountain-blue-50: #f2fbfa;
+	--color-fountain-blue-100: #d3f4f2;
+	--color-fountain-blue-200: #a7e8e5;
+	--color-fountain-blue-300: #72d6d6;
+	--color-fountain-blue-400: #3fabae;
+	--color-fountain-blue-500: #2c9ba0;
+	--color-fountain-blue-600: #217a80;
+	--color-fountain-blue-700: #1e6267;
+	--color-fountain-blue-800: #1c4e53;
+	--color-fountain-blue-900: #1c4245;
+	--color-fountain-blue-950: #0a2529;
+
+	--color-coral-red-50: #fff1f2;
+	--color-coral-red-100: #ffe1e3;
+	--color-coral-red-200: #ffc7ca;
+	--color-coral-red-300: #ffa1a7;
+	--color-coral-red-400: #ff6a73;
+	--color-coral-red-500: #f8444f;
+	--color-coral-red-600: #e51d29;
+	--color-coral-red-700: #c1141f;
+	--color-coral-red-800: #9f151d;
+	--color-coral-red-900: #84181f;
+	--color-coral-red-950: #48070b;
+
+	--color-snow-drift-50: #f7f8f3;
+	--color-snow-drift-100: #edf0e4;
+	--color-snow-drift-200: #dbdfc9;
+	--color-snow-drift-300: #c5cba6;
+	--color-snow-drift-400: #b0b582;
+	--color-snow-drift-500: #a2a56a;
+	--color-snow-drift-600: #98975e;
+	--color-snow-drift-700: #7f7c4f;
+	--color-snow-drift-800: #686444;
+	--color-snow-drift-900: #555239;
+	--color-snow-drift-950: #2d2b1d;
+
+	--color-neptune-50: #f1fafa;
+	--color-neptune-100: #ddeff0;
+	--color-neptune-200: #bee0e3;
+	--color-neptune-300: #78bdc4;
+	--color-neptune-400: #5daab3;
+	--color-neptune-500: #418e99;
+	--color-neptune-600: #397581;
+	--color-neptune-700: #33606b;
+	--color-neptune-800: #315059;
+	--color-neptune-900: #2c454d;
+	--color-neptune-950: #192c33;
+
+	--color-elephant-50: #eafeff;
+	--color-elephant-100: #cafaff;
+	--color-elephant-200: #9bf5ff;
+	--color-elephant-300: #57ebff;
+	--color-elephant-400: #0bdfff;
+	--color-elephant-500: #00c9eb;
+	--color-elephant-600: #009fc5;
+	--color-elephant-700: #007d9f;
+	--color-elephant-800: #0a6480;
+	--color-elephant-900: #0d526c;
+	--color-elephant-950: #012c3d;
+
+	--color-tree-poppy-50: #fff8eb;
+	--color-tree-poppy-100: #feeac7;
+	--color-tree-poppy-200: #fdd48a;
+	--color-tree-poppy-300: #fcb74d;
+	--color-tree-poppy-400: #fb991c;
+	--color-tree-poppy-500: #f5780b;
+	--color-tree-poppy-600: #d95506;
+	--color-tree-poppy-700: #b43809;
+	--color-tree-poppy-800: #922b0e;
+	--color-tree-poppy-900: #78240f;
+	--color-tree-poppy-950: #450f03;
+
+	--color-gossamer-50: #f1f8f4;
+	--color-gossamer-100: #ddeee4;
+	--color-gossamer-200: #bedccc;
+	--color-gossamer-300: #92c3ac;
+	--color-gossamer-400: #63a488;
+	--color-gossamer-500: #499577;
+	--color-gossamer-600: #306b55;
+	--color-gossamer-700: #265645;
+	--color-gossamer-800: #204538;
+	--color-gossamer-900: #1b392f;
+	--color-gossamer-950: #0e201b;
+
+	--color-lightning-yellow-50: #fffbeb;
+	--color-lightning-yellow-100: #fdf2c8;
+	--color-lightning-yellow-200: #fbe48c;
+	--color-lightning-yellow-300: #fad04f;
+	--color-lightning-yellow-400: #f8bb25;
+	--color-lightning-yellow-500: #f29b0e;
+	--color-lightning-yellow-600: #d67509;
+	--color-lightning-yellow-700: #b2520b;
+	--color-lightning-yellow-800: #903f10;
+	--color-lightning-yellow-900: #773410;
+	--color-lightning-yellow-950: #441a04;
+
+	--color-loblolly-50: #f6f8f9;
+	--color-loblolly-100: #ecf0f2;
+	--color-loblolly-200: #d6dde1;
+	--color-loblolly-300: #b0bfc6;
+	--color-loblolly-400: #889ea8;
+	--color-loblolly-500: #69838e;
+	--color-loblolly-600: #546a75;
+	--color-loblolly-700: #45565f;
+	--color-loblolly-800: #3b4951;
+	--color-loblolly-900: #353f45;
+	--color-loblolly-950: #232a2e;
+
+	--color-remy-50: #fff1f3;
+	--color-remy-100: #ffeaed;
+	--color-remy-200: #fecdd6;
+	--color-remy-300: #fda4b5;
+	--color-remy-400: #fb718e;
+	--color-remy-500: #f43f6a;
+	--color-remy-600: #e11d55;
+	--color-remy-700: #be1248;
+	--color-remy-800: #9f1243;
+	--color-remy-900: #88133f;
+	--color-remy-950: #4c051e;
+
+	--color-smalt-blue-50: #f4f6f7;
+	--color-smalt-blue-100: #e2e9eb;
+	--color-smalt-blue-200: #c8d4d9;
+	--color-smalt-blue-300: #a1b6bf;
+	--color-smalt-blue-400: #73909d;
+	--color-smalt-blue-500: #5f7d8c;
+	--color-smalt-blue-600: #4c616e;
+	--color-smalt-blue-700: #42525c;
+	--color-smalt-blue-800: #3b464f;
+	--color-smalt-blue-900: #353d44;
+	--color-smalt-blue-950: #20262c;
+
+	--color-alizarin-crimson-50: #fdf3f4;
+	--color-alizarin-crimson-100: #fde3e5;
+	--color-alizarin-crimson-200: #fccccf;
+	--color-alizarin-crimson-300: #f8a9af;
+	--color-alizarin-crimson-400: #f27780;
+	--color-alizarin-crimson-500: #e53945;
+	--color-alizarin-crimson-600: #d42e3a;
+	--color-alizarin-crimson-700: #b2232d;
+	--color-alizarin-crimson-800: #932129;
+	--color-alizarin-crimson-900: #7b2127;
+	--color-alizarin-crimson-950: #420d11;
+
+	--color-narvik-50: #f0faee;
+	--color-narvik-100: #e4f7e1;
+	--color-narvik-200: #c9eec4;
+	--color-narvik-300: #9de095;
+	--color-narvik-400: #6bc95f;
+	--color-narvik-500: #45ae39;
+	--color-narvik-600: #358f2a;
+	--color-narvik-700: #2c7124;
+	--color-narvik-800: #265a21;
+	--color-narvik-900: #204a1d;
+	--color-narvik-950: #0d280b;
+
+	--color-aqua-island-50: #f1fafa;
+	--color-aqua-island-100: #dcf1f1;
+	--color-aqua-island-200: #a9dbdb;
+	--color-aqua-island-300: #90cfd0;
+	--color-aqua-island-400: #5bb2b5;
+	--color-aqua-island-500: #40969a;
+	--color-aqua-island-600: #387b82;
+	--color-aqua-island-700: #33656b;
+	--color-aqua-island-800: #30545a;
+	--color-aqua-island-900: #2c474d;
+	--color-aqua-island-950: #192e33;
+
+	--color-wedgewood-50: #f2f7f9;
+	--color-wedgewood-100: #ddeaf0;
+	--color-wedgewood-200: #bfd6e2;
+	--color-wedgewood-300: #92b9ce;
+	--color-wedgewood-400: #5e93b2;
+	--color-wedgewood-500: #457b9c;
+	--color-wedgewood-600: #3a6280;
+	--color-wedgewood-700: #34526a;
+	--color-wedgewood-800: #314659;
+	--color-wedgewood-900: #2d3c4c;
+	--color-wedgewood-950: #1a2632;
+
+	--color-cello-50: #f3f6fc;
+	--color-cello-100: #e6edf8;
+	--color-cello-200: #c6d9f1;
+	--color-cello-300: #95b9e4;
+	--color-cello-400: #5c94d4;
+	--color-cello-500: #3777c0;
+	--color-cello-600: #275ca2;
+	--color-cello-700: #204a84;
+	--color-cello-800: #1e406e;
+	--color-cello-900: #1d3558;
+	--color-cello-950: #14233d;
+}
