@@ -17,6 +17,8 @@ import {
 	Layers,
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const SUPPORTED_CLASSES = [
 	"Buildings",
 	"Forest",
@@ -25,19 +27,6 @@ const SUPPORTED_CLASSES = [
 	"Sea",
 	"Street",
 ];
-
-const DUMMY_PREDICTION = {
-	label: "Forest",
-	confidence: 94.7,
-	model: "Intel Scene CNN",
-	inferenceTime: "128 ms",
-	topPredictions: [
-		{ label: "Forest", confidence: 94.7 },
-		{ label: "Mountain", confidence: 3.2 },
-		{ label: "Sea", confidence: 1.4 },
-		{ label: "Street", confidence: 0.7 },
-	],
-};
 
 function formatBytes(bytes) {
 	if (!bytes) return "";
@@ -51,14 +40,51 @@ function formatBytes(bytes) {
 	return `${n.toFixed(1)} ${units[i]}`;
 }
 
+function formatClassName(value) {
+	if (!value) return "Unknown";
+	return value
+		.replace(/_/g, " ")
+		.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function clamp(value, min, max) {
+	return Math.min(Math.max(value, min), max);
+}
+
 function Home() {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [previewUrl, setPreviewUrl] = useState(null);
 	const [isPredicting, setIsPredicting] = useState(false);
 	const [prediction, setPrediction] = useState(null);
 	const [dragActive, setDragActive] = useState(false);
+	const [supportedClasses, setSupportedClasses] = useState(SUPPORTED_CLASSES);
 	const inputRef = useRef(null);
 
+	// Fetch supported classes from backend on mount
+	useEffect(() => {
+		const fetchSupportedClasses = async () => {
+			try {
+				const response = await fetch(`${API_URL}/health`);
+				if (response.ok) {
+					const data = await response.json();
+					if (data.classes && Array.isArray(data.classes)) {
+						const formattedClasses =
+							data.classes.map(formatClassName);
+						setSupportedClasses(formattedClasses);
+					}
+				}
+			} catch (error) {
+				// Silently fail and use default supported classes
+				console.debug("Could not fetch supported classes:", error);
+			}
+		};
+
+		if (API_URL) {
+			fetchSupportedClasses();
+		}
+	}, []);
+
+	// Cleanup preview URL on unmount
 	useEffect(() => {
 		return () => {
 			if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -67,10 +93,14 @@ function Home() {
 
 	const acceptFile = (file) => {
 		if (!file) return;
-		if (!file.type.startsWith("image/")) {
-			toast.error("Please upload a valid image file.");
+
+		// Only allow JPG, JPEG, PNG
+		const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+		if (!allowedTypes.includes(file.type)) {
+			toast.error("Only JPG, JPEG, and PNG images are supported.");
 			return;
 		}
+
 		if (previewUrl) URL.revokeObjectURL(previewUrl);
 		setSelectedFile(file);
 		setPreviewUrl(URL.createObjectURL(file));
@@ -103,19 +133,77 @@ function Home() {
 		setDragActive(false);
 	};
 
-	const handlePredict = () => {
+	const handlePredict = async () => {
 		if (!selectedFile) {
 			toast.error("Please upload an image first.");
 			return;
 		}
+
+		if (!API_URL) {
+			toast.error("API URL is not configured.");
+			return;
+		}
+
 		setIsPredicting(true);
 		setPrediction(null);
-		const id = toast.loading("Running CNN inference...");
-		setTimeout(() => {
-			setPrediction(DUMMY_PREDICTION);
+		const toastId = toast.loading("Running CNN inference...");
+
+		try {
+			const start = performance.now();
+
+			const formData = new FormData();
+			formData.append("file", selectedFile);
+
+			const response = await fetch(`${API_URL}/predict`, {
+				method: "POST",
+				body: formData,
+			});
+
+			const end = performance.now();
+			const inferenceTime = Math.round(end - start);
+
+			if (!response.ok) {
+				let errorMessage = "Prediction failed. Please try again.";
+				try {
+					const errorData = await response.json();
+					if (errorData.detail) {
+						errorMessage = errorData.detail;
+					}
+				} catch (e) {
+					// Use default error message if JSON parsing fails
+				}
+				toast.error(errorMessage, { id: toastId });
+				return;
+			}
+
+			const data = await response.json();
+
+			// Transform backend response to UI-friendly structure
+			const topPredictions = Object.entries(data.all_predictions)
+				.map(([label, confidence]) => ({
+					label: formatClassName(label),
+					confidence: clamp(confidence * 100, 0, 100),
+				}))
+				.sort((a, b) => b.confidence - a.confidence);
+
+			const prediction = {
+				label: formatClassName(data.predicted_class),
+				confidence: clamp(data.confidence * 100, 0, 100),
+				model: "Intel Scene CNN",
+				inferenceTime: `${inferenceTime} ms`,
+				topPredictions: topPredictions,
+			};
+
+			setPrediction(prediction);
+			toast.success(`Predicted: ${prediction.label}`, { id: toastId });
+		} catch (error) {
+			console.error("Prediction error:", error);
+			toast.error("Unable to connect to the prediction API.", {
+				id: toastId,
+			});
+		} finally {
 			setIsPredicting(false);
-			toast.success(`Predicted: ${DUMMY_PREDICTION.label}`, { id });
-		}, 1100);
+		}
 	};
 
 	const handleReset = () => {
@@ -302,7 +390,7 @@ function Home() {
 									Click or drag &amp; drop to browse
 								</p>
 								<p className="mt-3 text-xs text-shark-500">
-									PNG, JPG, JPEG or WEBP
+									PNG, JPG or JPEG
 								</p>
 							</motion.label>
 						) : (
@@ -572,7 +660,6 @@ function Home() {
 					</motion.div>
 				</div>
 
-				{/* Supported classes */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -584,7 +671,7 @@ function Home() {
 						Supported Categories
 					</p>
 					<div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-						{SUPPORTED_CLASSES.map((c) => (
+						{supportedClasses.map((c) => (
 							<span
 								key={c}
 								className="rounded-full border border-elephant-500/30 bg-shark-800/60 px-4 py-1.5 text-xs font-medium text-elephant-200 backdrop-blur transition hover:border-elephant-400/60 hover:bg-elephant-500/10"
