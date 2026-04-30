@@ -15,6 +15,9 @@ import {
 	Zap,
 	BarChart3,
 	Layers,
+	CodeXml,
+	User,
+	Code2Icon,
 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -60,7 +63,6 @@ function Home() {
 	const [supportedClasses, setSupportedClasses] = useState(SUPPORTED_CLASSES);
 	const inputRef = useRef(null);
 
-	// Fetch supported classes from backend on mount
 	useEffect(() => {
 		const fetchSupportedClasses = async () => {
 			try {
@@ -74,7 +76,6 @@ function Home() {
 					}
 				}
 			} catch (error) {
-				// Silently fail and use default supported classes
 				console.debug("Could not fetch supported classes:", error);
 			}
 		};
@@ -84,7 +85,6 @@ function Home() {
 		}
 	}, []);
 
-	// Cleanup preview URL on unmount
 	useEffect(() => {
 		return () => {
 			if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -94,7 +94,6 @@ function Home() {
 	const acceptFile = (file) => {
 		if (!file) return;
 
-		// Only allow JPG, JPEG, PNG
 		const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
 		if (!allowedTypes.includes(file.type)) {
 			toast.error("Only JPG, JPEG, and PNG images are supported.");
@@ -169,16 +168,13 @@ function Home() {
 					if (errorData.detail) {
 						errorMessage = errorData.detail;
 					}
-				} catch (e) {
-					// Use default error message if JSON parsing fails
-				}
+				} catch (e) {}
 				toast.error(errorMessage, { id: toastId });
 				return;
 			}
 
 			const data = await response.json();
 
-			// Transform backend response to UI-friendly structure
 			const topPredictions = Object.entries(data.all_predictions)
 				.map(([label, confidence]) => ({
 					label: formatClassName(label),
@@ -222,7 +218,7 @@ function Home() {
 		{
 			icon: Layers,
 			title: "CNN-Based Classification",
-			desc: "Deep convolutional layers trained on Intel scene imagery.",
+			desc: "Deep convolutional layers trained on Intel Image Dataset.",
 		},
 		{
 			icon: BarChart3,
@@ -233,13 +229,12 @@ function Home() {
 
 	return (
 		<div className="relative min-h-screen overflow-hidden bg-shark-900 font-ubuntu text-shark-200">
-			{/* Decorative background */}
 			<div className="pointer-events-none absolute inset-0">
 				<div className="absolute -top-40 -left-40 h-120 w-120 rounded-full bg-elephant-500/20 blur-[140px]" />
 				<div className="absolute top-1/3 -right-40 h-130 w-130 rounded-full bg-elephant-700/25 blur-[160px]" />
 				<div className="absolute bottom-0 left-1/2 h-100 w-175 -translate-x-1/2 rounded-full bg-elephant-900/40 blur-[160px]" />
 				<div
-					className="absolute inset-0 opacity-[0.05]"
+					className="absolute inset-0 opacity-[0.035]"
 					style={{
 						backgroundImage:
 							"linear-gradient(rgba(155,245,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(155,245,255,0.5) 1px, transparent 1px)",
@@ -252,7 +247,6 @@ function Home() {
 			</div>
 
 			<div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-				{/* Hero */}
 				<motion.section
 					initial="hidden"
 					animate="show"
@@ -297,16 +291,38 @@ function Home() {
 							hidden: { opacity: 0, y: 20 },
 							show: { opacity: 1, y: 0 },
 						}}
-						className="mt-5 max-w-2xl text-base text-shark-300 sm:text-lg"
+						className="mt-4 max-w-2xl text-xs leading-relaxed text-shark-300 sm:text-base"
 					>
-						Upload a scene image and let the CNN model predict its
-						category with confidence.
+						Upload a scene image from the supported categories and
+						let the CNN model predict its class with confidence.
+						Images outside these categories may produce incorrect,
+						random, or irrelevant results.
 					</motion.p>
 				</motion.section>
 
-				{/* Main interaction */}
-				<div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2">
-					{/* Upload panel */}
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.5 }}
+					className="mt-8 flex flex-col items-center sm:mt-10"
+				>
+					<p className="text-xs font-medium font-ubuntu uppercase tracking-[0.2em] text-shark-400">
+						Supported Categories
+					</p>
+					<div className="mt-4 font-ubuntu flex flex-wrap items-center justify-center gap-2">
+						{supportedClasses.map((c) => (
+							<span
+								key={c}
+								className="rounded-full border border-elephant-500/30 bg-shark-800/60 px-4 py-1.5 text-xs font-medium text-elephant-200 backdrop-blur transition hover:border-elephant-400/60 hover:bg-elephant-500/10"
+							>
+								{c}
+							</span>
+						))}
+					</div>
+				</motion.div>
+
+				<div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2 sm:mt-12">
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -438,7 +454,6 @@ function Home() {
 						</motion.button>
 					</motion.div>
 
-					{/* Prediction panel */}
 					<motion.div
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -645,29 +660,6 @@ function Home() {
 				</div>
 
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.5 }}
-					className="mt-14 flex flex-col items-center"
-				>
-					<p className="text-xs font-medium uppercase tracking-[0.2em] text-shark-400">
-						Supported Categories
-					</p>
-					<div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-						{supportedClasses.map((c) => (
-							<span
-								key={c}
-								className="rounded-full border border-elephant-500/30 bg-shark-800/60 px-4 py-1.5 text-xs font-medium text-elephant-200 backdrop-blur transition hover:border-elephant-400/60 hover:bg-elephant-500/10"
-							>
-								{c}
-							</span>
-						))}
-					</div>
-				</motion.div>
-
-				{/* Features */}
-				<motion.div
 					initial="hidden"
 					whileInView="show"
 					viewport={{ once: true }}
@@ -701,9 +693,15 @@ function Home() {
 					))}
 				</motion.div>
 
-				<div className="mt-16 text-center text-xs text-shark-500">
-					Built with CNN · Intel Image Classification
-				</div>
+				<a
+					href="https://github.com/MosabbirAhmed125"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="mt-16 flex items-center justify-center gap-2 text-xs font-medium text-shark-500 transition hover:text-elephant-300"
+				>
+					<CodeXml className="h-4 w-4" />
+					<span>Built by Mosabbir Ahmed</span>
+				</a>
 			</div>
 		</div>
 	);
