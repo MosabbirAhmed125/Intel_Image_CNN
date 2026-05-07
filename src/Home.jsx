@@ -834,7 +834,7 @@ function Home() {
 											Model
 										</p>
 										<p className="mt-1.5 truncate text-base font-semibold text-shark-100">
-											Intel Scene CNN
+											Intel Image CNN
 										</p>
 									</div>
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
