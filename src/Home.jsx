@@ -28,14 +28,14 @@ import {
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MODEL_PERFORMANCE = {
-	overallAccuracy: 87.9,
-	testLoss: 0.3426,
-	trainingTime: "584.68 sec",
+	overallAccuracy: 89.9,
+	testLoss: 0.3027,
+	trainingTime: "748.99 sec",
 	totalSamples: 1690,
 	classes: [
 		{
 			className: "Forest",
-			accuracy: 94.7,
+			accuracy: 95.3,
 			precision: 97,
 			recall: 95,
 			f1Score: 96,
@@ -43,26 +43,26 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Glacier",
-			accuracy: 95.6,
-			precision: 74,
-			recall: 96,
-			f1Score: 83,
+			accuracy: 80.1,
+			precision: 92,
+			recall: 80,
+			f1Score: 86,
 			support: 431,
 		},
 		{
 			className: "Sea",
-			accuracy: 64.5,
-			precision: 96,
-			recall: 64,
-			f1Score: 77,
+			accuracy: 86.7,
+			precision: 88,
+			recall: 87,
+			f1Score: 88,
 			support: 414,
 		},
 		{
 			className: "Street",
-			accuracy: 96.1,
-			precision: 91,
-			recall: 96,
-			f1Score: 94,
+			accuracy: 97.7,
+			precision: 84,
+			recall: 98,
+			f1Score: 90,
 			support: 433,
 		},
 	],
@@ -866,7 +866,7 @@ function Home() {
 											Weighted F1-Score
 										</p>
 										<p className="mt-1.5 text-base font-semibold text-shark-100">
-											0.88
+											0.90
 										</p>
 									</div>
 								</div>
