@@ -233,7 +233,7 @@ function Home() {
 			const prediction = {
 				label: formatClassName(data.predicted_class),
 				confidence: clamp(data.confidence * 100, 0, 100),
-				model: "Intel Scene CNN",
+				model: "Intel Image CNN",
 				inferenceTime: `${inferenceTime} ms`,
 				topPredictions: topPredictions,
 			};
@@ -937,7 +937,7 @@ function Home() {
 
 								<p className="text-[11px] leading-relaxed text-shark-500">
 									Class-wise accuracy is calculated from the
-									confusion matrix as correct predictions
+									Confusion Matrix as correct predictions
 									divided by total actual samples for each
 									class.
 								</p>
