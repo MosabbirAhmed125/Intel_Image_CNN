@@ -28,47 +28,72 @@ import {
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MODEL_PERFORMANCE = {
-	overallAccuracy: 89.9,
-	testLoss: 0.3027,
-	trainingTime: "748.99 sec",
-	totalSamples: 1690,
+	overallAccuracy: 84.18,
+	testLoss: 0.4785,
+	trainingTime: "1915.71 sec",
+	totalSamples: 2535,
+	weightedF1: 0.84,
+	weightedRocAuc: 0.98,
 	classes: [
 		{
+			className: "Buildings",
+			accuracy: 84.6,
+			precision: 85,
+			recall: 85,
+			f1Score: 85,
+			support: 369,
+		},
+		{
 			className: "Forest",
-			accuracy: 95.3,
-			precision: 97,
-			recall: 95,
-			f1Score: 96,
-			support: 412,
+			accuracy: 95.8,
+			precision: 95,
+			recall: 96,
+			f1Score: 95,
+			support: 401,
 		},
 		{
 			className: "Glacier",
-			accuracy: 80.1,
-			precision: 92,
-			recall: 80,
-			f1Score: 86,
-			support: 431,
+			accuracy: 74.9,
+			precision: 76,
+			recall: 75,
+			f1Score: 75,
+			support: 467,
+		},
+		{
+			className: "Mountain",
+			accuracy: 74.3,
+			precision: 75,
+			recall: 74,
+			f1Score: 75,
+			support: 444,
 		},
 		{
 			className: "Sea",
-			accuracy: 86.7,
-			precision: 88,
-			recall: 87,
+			accuracy: 88.4,
+			precision: 87,
+			recall: 88,
 			f1Score: 88,
-			support: 414,
+			support: 431,
 		},
 		{
 			className: "Street",
-			accuracy: 97.7,
-			precision: 84,
-			recall: 98,
-			f1Score: 90,
-			support: 433,
+			accuracy: 91.5,
+			precision: 90,
+			recall: 92,
+			f1Score: 91,
+			support: 423,
 		},
 	],
 };
 
-const SUPPORTED_CLASSES = ["Forest", "Glacier", "Sea", "Street"];
+const SUPPORTED_CLASSES = [
+	"Buildings",
+	"Forest",
+	"Glacier",
+	"Mountain",
+	"Sea",
+	"Street",
+];
 
 function formatBytes(bytes) {
 	if (!bytes) return "";
@@ -233,7 +258,7 @@ function Home() {
 			const prediction = {
 				label: formatClassName(data.predicted_class),
 				confidence: clamp(data.confidence * 100, 0, 100),
-				model: "Intel Image CNN",
+				model: "Baseline CNN Improved (A2 + Weather)",
 				inferenceTime: `${inferenceTime} ms`,
 				topPredictions: topPredictions,
 			};
@@ -834,7 +859,7 @@ function Home() {
 											Model
 										</p>
 										<p className="mt-1.5 truncate text-base font-semibold text-shark-100">
-											Intel Image CNN
+											Baseline CNN Improved (A2 + Weather)
 										</p>
 									</div>
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
@@ -866,7 +891,15 @@ function Home() {
 											Weighted F1-Score
 										</p>
 										<p className="mt-1.5 text-base font-semibold text-shark-100">
-											0.90
+											{MODEL_PERFORMANCE.weightedF1}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											Weighted ROC-AUC
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.weightedRocAuc}
 										</p>
 									</div>
 								</div>
@@ -878,7 +911,7 @@ function Home() {
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/40 p-3">
 										<ResponsiveContainer
 											width="100%"
-											height={230}
+											height={280}
 										>
 											<BarChart
 												data={MODEL_PERFORMANCE.classes}
@@ -886,7 +919,7 @@ function Home() {
 													top: 10,
 													right: 10,
 													left: -15,
-													bottom: 0,
+													bottom: 20,
 												}}
 											>
 												<CartesianGrid
