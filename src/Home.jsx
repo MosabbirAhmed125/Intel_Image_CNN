@@ -28,60 +28,62 @@ import {
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MODEL_PERFORMANCE = {
-	overallAccuracy: 84.18,
-	testLoss: 0.4785,
-	trainingTime: "1915.71 sec",
+	overallAccuracy: 83.94,
+	testLoss: 0.4895,
+	trainingTime: "60.36 minutes",
 	totalSamples: 2535,
-	weightedF1: 0.84,
-	weightedRocAuc: 0.98,
+	weightedF1: "84.0%",
+	weightedRocAuc: 0.973,
+	pgdAccuracy: "45.56%",
+	slideAccuracy: "83.43%",
 	classes: [
 		{
 			className: "Buildings",
-			accuracy: 84.6,
-			precision: 85,
-			recall: 85,
-			f1Score: 85,
-			support: 369,
+			accuracy: 78.1,
+			precision: 86,
+			recall: 78,
+			f1Score: 82,
+			support: 392,
 		},
 		{
 			className: "Forest",
-			accuracy: 95.8,
-			precision: 95,
-			recall: 96,
-			f1Score: 95,
-			support: 401,
+			accuracy: 97.1,
+			precision: 96,
+			recall: 97,
+			f1Score: 96,
+			support: 411,
 		},
 		{
 			className: "Glacier",
-			accuracy: 74.9,
-			precision: 76,
-			recall: 75,
-			f1Score: 75,
-			support: 467,
-		},
-		{
-			className: "Mountain",
-			accuracy: 74.3,
-			precision: 75,
-			recall: 74,
-			f1Score: 75,
-			support: 444,
-		},
-		{
-			className: "Sea",
-			accuracy: 88.4,
-			precision: 87,
-			recall: 88,
-			f1Score: 88,
+			accuracy: 82.4,
+			precision: 79,
+			recall: 82,
+			f1Score: 81,
 			support: 431,
 		},
 		{
+			className: "Mountain",
+			accuracy: 76.0,
+			precision: 79,
+			recall: 76,
+			f1Score: 78,
+			support: 454,
+		},
+		{
+			className: "Sea",
+			accuracy: 81.9,
+			precision: 81,
+			recall: 82,
+			f1Score: 81,
+			support: 415,
+		},
+		{
 			className: "Street",
-			accuracy: 91.5,
-			precision: 90,
-			recall: 92,
-			f1Score: 91,
-			support: 423,
+			accuracy: 88.7,
+			precision: 84,
+			recall: 89,
+			f1Score: 86,
+			support: 432,
 		},
 	],
 };
@@ -834,11 +836,20 @@ function Home() {
 										Class-wise accuracy breakdown from the
 										evaluation results.
 									</p>
+									{/* Tiny descriptive badge/subtitle for adversarial defense */}
+									<div className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-elephant-500/20 bg-elephant-950/40 px-2.5 py-1 text-[11px] text-elephant-300">
+										<span className="h-1.5 w-1.5 rounded-full bg-elephant-400 animate-pulse" />
+										<span>
+											PGD (L_inf) & SLIDE (L_1)
+											evaluated under rigorous
+											multi-perturbation attack budgets.
+										</span>
+									</div>
 								</div>
 
 								<div className="mb-5 rounded-xl border border-elephant-500/20 bg-linear-to-br from-elephant-950/80 to-shark-900/80 p-4">
 									<p className="text-[11px] uppercase tracking-wider text-elephant-300">
-										Overall Accuracy
+										Clean Accuracy
 									</p>
 									<p className="mt-1 text-3xl font-bold text-shark-100 sm:text-4xl">
 										{MODEL_PERFORMANCE.overallAccuracy}%
@@ -846,6 +857,7 @@ function Home() {
 								</div>
 
 								<div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+									{/* Row 1 */}
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
 										<p className="text-[11px] text-shark-400">
 											Classes Evaluated
@@ -870,6 +882,8 @@ function Home() {
 											{MODEL_PERFORMANCE.totalSamples}
 										</p>
 									</div>
+
+									{/* Row 2 */}
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
 										<p className="text-[11px] text-shark-400">
 											Test Loss
@@ -894,12 +908,30 @@ function Home() {
 											{MODEL_PERFORMANCE.weightedF1}
 										</p>
 									</div>
+
+									{/* Row 3 - Perfectly balanced 3-column grid */}
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
 										<p className="text-[11px] text-shark-400">
 											Weighted ROC-AUC
 										</p>
 										<p className="mt-1.5 text-base font-semibold text-shark-100">
 											{MODEL_PERFORMANCE.weightedRocAuc}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											PGD Robust Accuracy (L_inf)
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.pgdAccuracy}
+										</p>
+									</div>
+									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
+										<p className="text-[11px] text-shark-400">
+											SLIDE Robust Accuracy (L_1)
+										</p>
+										<p className="mt-1.5 text-base font-semibold text-shark-100">
+											{MODEL_PERFORMANCE.slideAccuracy}
 										</p>
 									</div>
 								</div>
