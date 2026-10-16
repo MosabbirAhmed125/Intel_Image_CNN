@@ -258,7 +258,7 @@ function Home() {
 			const prediction = {
 				label: formatClassName(data.predicted_class),
 				confidence: clamp(data.confidence * 100, 0, 100),
-				model: "Baseline CNN Improved (A2 + Weather)",
+				model: "Robust Hybrid CNN",
 				inferenceTime: `${inferenceTime} ms`,
 				topPredictions: topPredictions,
 			};
