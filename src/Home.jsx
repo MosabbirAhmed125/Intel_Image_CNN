@@ -24,22 +24,22 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { preloadModel, runBrowserInference } from "./utils/onnxInference";
+import classNamesData from "../public/class_names.json";
 
 const MODEL_PERFORMANCE = {
-	overallAccuracy: 83.94,
-	testLoss: 0.4895,
-	trainingTime: "60.36 minutes",
+	overallAccuracy: 84.02,
+	testLoss: 0.5301,
+	trainingTime: "65.16 minutes",
 	totalSamples: 2535,
-	weightedF1: "84.0%",
-	weightedRocAuc: 0.973,
+	weightedF1: "83.98%",
+	weightedRocAuc: 0.9739,
 	pgdAccuracy: "45.56%",
 	slideAccuracy: "83.43%",
 	classes: [
 		{
 			className: "Buildings",
-			accuracy: 78.1,
+			accuracy: 79.08,
 			precision: 86,
 			recall: 78,
 			f1Score: 82,
@@ -47,7 +47,7 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Forest",
-			accuracy: 97.1,
+			accuracy: 97.32,
 			precision: 96,
 			recall: 97,
 			f1Score: 96,
@@ -55,7 +55,7 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Glacier",
-			accuracy: 82.4,
+			accuracy: 84.69,
 			precision: 79,
 			recall: 82,
 			f1Score: 81,
@@ -63,7 +63,7 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Mountain",
-			accuracy: 76.0,
+			accuracy: 77.09,
 			precision: 79,
 			recall: 76,
 			f1Score: 78,
@@ -71,7 +71,7 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Sea",
-			accuracy: 81.9,
+			accuracy: 77.59,
 			precision: 81,
 			recall: 82,
 			f1Score: 81,
@@ -79,7 +79,7 @@ const MODEL_PERFORMANCE = {
 		},
 		{
 			className: "Street",
-			accuracy: 88.7,
+			accuracy: 88.66,
 			precision: 84,
 			recall: 89,
 			f1Score: 86,
@@ -126,30 +126,16 @@ function Home() {
 	const [isPredicting, setIsPredicting] = useState(false);
 	const [prediction, setPrediction] = useState(null);
 	const [dragActive, setDragActive] = useState(false);
-	const [supportedClasses, setSupportedClasses] = useState(SUPPORTED_CLASSES);
+	const [supportedClasses] = useState(
+		Array.isArray(classNamesData) && classNamesData.length > 0
+			? classNamesData.map(formatClassName)
+			: SUPPORTED_CLASSES,
+	);
 	const [showPerformance, setShowPerformance] = useState(false);
 	const inputRef = useRef(null);
 
 	useEffect(() => {
-		const fetchSupportedClasses = async () => {
-			try {
-				const response = await fetch(`${API_URL}/health`);
-				if (response.ok) {
-					const data = await response.json();
-					if (data.classes && Array.isArray(data.classes)) {
-						const formattedClasses =
-							data.classes.map(formatClassName);
-						setSupportedClasses(formattedClasses);
-					}
-				}
-			} catch (error) {
-				console.debug("Could not fetch supported classes:", error);
-			}
-		};
-
-		if (API_URL) {
-			fetchSupportedClasses();
-		}
+		preloadModel();
 	}, []);
 
 	useEffect(() => {
@@ -213,42 +199,15 @@ function Home() {
 			return;
 		}
 
-		if (!API_URL) {
-			toast.error("API URL is not configured.");
-			return;
-		}
-
 		setIsPredicting(true);
 		setPrediction(null);
 		const toastId = toast.loading("Running CNN inference...");
 
 		try {
 			const start = performance.now();
-
-			const formData = new FormData();
-			formData.append("file", selectedFile);
-
-			const response = await fetch(`${API_URL}/predict`, {
-				method: "POST",
-				body: formData,
-			});
-
+			const data = await runBrowserInference(selectedFile);
 			const end = performance.now();
-			const inferenceTime = Math.round(end - start);
-
-			if (!response.ok) {
-				let errorMessage = "Prediction failed. Please try again.";
-				try {
-					const errorData = await response.json();
-					if (errorData.detail) {
-						errorMessage = errorData.detail;
-					}
-				} catch (e) {}
-				toast.error(errorMessage, { id: toastId });
-				return;
-			}
-
-			const data = await response.json();
+			const inferenceTime = `${Math.max(1, Math.round(end - start))} ms`;
 
 			const topPredictions = Object.entries(data.all_predictions)
 				.map(([label, confidence]) => ({
@@ -260,8 +219,8 @@ function Home() {
 			const prediction = {
 				label: formatClassName(data.predicted_class),
 				confidence: clamp(data.confidence * 100, 0, 100),
-				model: "Robust Hybrid CNN",
-				inferenceTime: `${inferenceTime} ms`,
+				model: "SE-Robust Hybrid CNN",
+				inferenceTime: inferenceTime,
 				topPredictions: topPredictions,
 			};
 
@@ -269,9 +228,12 @@ function Home() {
 			toast.success(`Predicted: ${prediction.label}`, { id: toastId });
 		} catch (error) {
 			console.error("Prediction error:", error);
-			toast.error("Unable to connect to the prediction API.", {
-				id: toastId,
-			});
+			toast.error(
+				"Inference failed. Please try another image or refresh the page.",
+				{
+					id: toastId,
+				},
+			);
 		} finally {
 			setIsPredicting(false);
 		}
@@ -840,9 +802,9 @@ function Home() {
 									<div className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-elephant-500/20 bg-elephant-950/40 px-2.5 py-1 text-[11px] text-elephant-300">
 										<span className="h-1.5 w-1.5 rounded-full bg-elephant-400 animate-pulse" />
 										<span>
-											PGD (L_inf) & SLIDE (L_1)
-											evaluated under rigorous
-											multi-perturbation attack budgets.
+											PGD (L_inf) & SLIDE (L_1) evaluated
+											under rigorous multi-perturbation
+											attack budgets.
 										</span>
 									</div>
 								</div>
@@ -871,7 +833,7 @@ function Home() {
 											Model
 										</p>
 										<p className="mt-1.5 truncate text-base font-semibold text-shark-100">
-											Robust Hybrid CNN
+											SE-Robust Hybrid CNN
 										</p>
 									</div>
 									<div className="rounded-xl border border-shark-700/80 bg-shark-900/50 p-3">
